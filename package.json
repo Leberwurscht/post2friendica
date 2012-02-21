@@ -1,0 +1,15 @@
+{
+    "name": "post2friendica", 
+    "license": "MPL 1.1", 
+    "author": "Leberwurscht", 
+    "version": "0.1", 
+    "fullName": "post2friendica", 
+    "id": "jid1-VHReMUOdzb6BlQ", 
+    "description": "post images to friendica",
+    "preferences": [{
+        "name": "profile_url",
+        "title": "Friendica profile URL",
+        "type": "string",
+        "value": "http://example.com/network"
+    }]
+}
