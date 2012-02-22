@@ -7,8 +7,8 @@
     "id": "jid1-VHReMUOdzb6BlQ", 
     "description": "post images to friendica",
     "preferences": [{
-        "name": "profile_url",
-        "title": "Friendica profile URL",
+        "name": "network_url",
+        "title": "Friendica URL",
         "type": "string",
         "value": "http://example.com/network"
     }]
