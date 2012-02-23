@@ -1,23 +1,24 @@
 //  taken from the Friendica jotShare function (view/jot-header.tpl)
-HTMLInjector = 'window.addEventListener("message", function(ev) { if (!editor) $("#profile-jot-text").val(""); initEditor(function() { tinyMCE.execCommand("mceInsertRawHTML", false, ev.data); }); }, false);'
+InsertHTMLScript = 'window.addEventListener("message", function(ev) { if (!editor) $("#profile-jot-text").val(""); initEditor(function() { tinyMCE.execCommand("mceInsertRawHTML", false, ev.data); }); }, false);'
 
 //  taken from the Friendica jotGetLink function (view/jot-header.tpl)
-URLInjector = 'window.addEventListener("message", function(ev) { reply = bin2hex(ev.data); $.get("parse_url?binurl=" + reply, function(data) { if (!editor) $("#profile-jot-text").val(""); initEditor(function() { tinyMCE.execCommand("mceInsertRawHTML", false, data); }); }); }, false);';
+InsertURLScript = 'window.addEventListener("message", function(ev) { reply = bin2hex(ev.data); $.get("parse_url?binurl=" + reply, function(data) { if (!editor) $("#profile-jot-text").val(""); initEditor(function() { tinyMCE.execCommand("mceInsertRawHTML", false, data); }); }); }, false);';
 
-function injectURL(href) {
+// functions to insert items into the Friendica textarea
+function insertURL(href) {
     // inject the javascript
     // http://wiki.greasespot.net/Content_Script_Injection
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
-    script.textContent = URLInjector;
+    script.textContent = InsertURLScript;
     document.body.appendChild(script);
     document.body.removeChild(script);
 
     document.defaultView.postMessage(href, '*');
 }
 
-function injectImage(src, alt) {
-    // create html code to inject
+function insertImage(src, alt) {
+    // create html code to insert
     // http://stackoverflow.com/questions/2474605/how-to-convert-a-htmlelement-to-a-string
     var container = document.createElement("div");
     var el = document.createElement("img");
@@ -31,15 +32,15 @@ function injectImage(src, alt) {
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
     //  taken from the Friendica jotShare function (view/jot-header.tpl)
-    script.textContent = HTMLInjector;
+    script.textContent = InsertHTMLScript;
     document.body.appendChild(script);
     document.body.removeChild(script);
 
     document.defaultView.postMessage(htmlcode, '*');
 }
 
-function injectQuote(source, title, text) {
-    // create html code to inject
+function insertQuote(source, title, text) {
+    // create html code to insert
     // http://stackoverflow.com/questions/2474605/how-to-convert-a-htmlelement-to-a-string
     var container = document.createElement("div");
     var el = document.createElement("a");
@@ -67,14 +68,16 @@ function injectQuote(source, title, text) {
     // http://wiki.greasespot.net/Content_Script_Injection
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
-    script.textContent = HTMLInjector;
+    script.textContent = InsertHTMLScript;
     document.body.appendChild(script);
     document.body.removeChild(script);
 
     document.defaultView.postMessage(htmlcode, '*');
 }
 
+// callback for the "post" event from main.js
 self.port.on("post", function(data) {
+    // get generator meta tag
     try {
         generator = document.getElementsByName('generator')[0].getAttribute('content');
     }
@@ -88,16 +91,16 @@ self.port.on("post", function(data) {
             return;
         }
 
-        // insert image if text field present
+        // insert item if text field present
         if (document.getElementById("profile-jot-text")) {
             if (data.type=="url") {
-                injectURL(data.href);
+                insertURL(data.href);
             }
             else if (data.type=="img") {
-                injectImage(data.src, data.alt);
+                insertImage(data.src, data.alt);
             }
             else if (data.type="quote") {
-                injectQuote(data.source, data.title, data.text);
+                insertQuote(data.source, data.title, data.text);
             }
         }
         else {
@@ -114,5 +117,6 @@ self.port.on("post", function(data) {
         });
     }
 
+    // notify main.js that the content script should no longer be attached when a new site loads in the tab
     self.port.emit("done", true);
 });
