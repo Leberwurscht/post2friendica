@@ -103,17 +103,11 @@ self.port.on("post", function(data) {
             }
         }
         else {
-            self.port.emit("notify", {
-                title:"post2friendica was unable to detected a text field",
-                text:"Make sure you supplied an URL ending with /network in the addon preferences."
-            });
+            self.port.emit("error", "text_field");
         }
     }
     else {
-        self.port.emit("notify", {
-            title:"post2friendica URL error",
-            text:"The URL you specified in the addon preferences does not point to a Friendica site."
-        });
+        self.port.emit("error", "generator");
     }
 
     // notify main.js that the content script should no longer be attached when a new site loads in the tab
