@@ -31,7 +31,6 @@ function insertImage(src, alt) {
     // http://wiki.greasespot.net/Content_Script_Injection
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
-    //  taken from the Friendica jotShare function (view/jot-header.tpl)
     script.textContent = InsertHTMLScript;
     document.body.appendChild(script);
     document.body.removeChild(script);
@@ -53,14 +52,14 @@ function insertQuote(source, title, text) {
     container.appendChild(el);
 
     var el = document.createElement("br");
-    container.appendChild(el);;
+    container.appendChild(el);
 
     var el = document.createElement("blockquote");
     el.textContent = text;
     container.appendChild(el);
 
     var el = document.createElement("br");
-    container.appendChild(el);;
+    container.appendChild(el);
 
     htmlcode = container.innerHTML;
 
