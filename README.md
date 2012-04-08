@@ -6,10 +6,15 @@ A new tab with a configurable Friendica site is opened, and the item is inserted
 
 It works by injecting Javascript into the newly opened tab with the content script injection technique (http://wiki.greasespot.net/Content_Script_Injection). The injected scripts are based on the jotShare and jotGetLink functions from Friendica, so if the interface used by these functions changes, the addon will probably stop working.
 
+Translation
+-----------
+
+Messages are translated on transifex: https://www.transifex.net/projects/p/post2friendica/
+
 Developer info
 --------------
 
-The addon is built with the Add-on SDK of Firefox (https://addons.mozilla.org/en-US/developers/builder). Due to the security concepts of Firefox, three layers are needed to inject the script:
+The addon is built with the Add-on SDK of Firefox (https://addons.mozilla.org/en-US/developers/builder). Due to the security concepts of Firefox, three layers are needed to inject the necessary script into the Friendica site:
 
 * lib/main.js configures the context menu items and opens a new tab with the Friendica site. main.js is not allowed to touch the DOM of the newly opened tab, therefore a so-called "content script" is attached to the tab.
 * data/contentscript.js is allowed to touch the DOM, but has (again for security reasons) no access to Javascript variables of the Friendica page. Therefore a script tag is appended to the DOM. This is the so-called "content script injection technique" (http://wiki.greasespot.net/Content_Script_Injection).
