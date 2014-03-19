@@ -2,7 +2,7 @@
     "name": "post2friendica",
     "license": "MIT",
     "author": "Leberwurscht",
-    "version": "0.7",
+    "version": "0.8",
     "fullName": "post2friendica",
     "id": "jid1-VHReMUOdzb6BlQ",
     "description": "Adds entries to the context menu that allow the user to share images, links, the page URL or a selection on his Friendica account easily: A new tab with a configurable Friendica site is opened, and the item is inserted into the textarea. The user can still edit or add something before posting.",
